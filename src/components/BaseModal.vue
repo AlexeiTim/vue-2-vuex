@@ -3,18 +3,18 @@
     <div class="modal" @click.stop>
       <div class="modal-header">
         <slot name="header">
-          <h3>Default Header</h3>
+          <div />
         </slot>
         <button class="close-button" @click="close">x</button>
       </div>
       <div class="modal-body">
         <slot name="body">
-          <p>Default Body</p>
+          <p></p>
         </slot>
       </div>
       <div class="modal-footer">
         <slot name="footer">
-          <button @click="close">Close</button>
+          
         </slot>
       </div>
     </div>

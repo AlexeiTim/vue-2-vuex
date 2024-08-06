@@ -1,6 +1,8 @@
 <template>
   <BaseModal :is-visible="isVisible" @close="$emit('close')">
-    hello
+    <template #body>
+      Create/Update appeal
+    </template>
   </BaseModal>
 </template>
 
