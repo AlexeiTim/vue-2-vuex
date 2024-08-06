@@ -1,11 +1,11 @@
-import ApplicationsView from '../views/ApplicationsView.vue';
+import AppealsView from '../views/AppealsView.vue';
 import LoginView from '../views/LoginView.vue';
 
 export const routes = [
   {
     path: '/',
-    name: 'Applications',
-    component: ApplicationsView,
+    name: 'Appeals',
+    component: AppealsView,
     meta: {
       authPermission: true,
     }

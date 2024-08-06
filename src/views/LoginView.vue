@@ -18,7 +18,7 @@ import {  mapState } from 'vuex';
       async login() {
         await this.$store.dispatch('auth/login', { username: this.username, password: this.password})
         if (!this.error)
-          this.$router.push({ name: 'Applications'})
+          this.$router.push({ name: 'Appeals'})
       }
     },
     computed: {
