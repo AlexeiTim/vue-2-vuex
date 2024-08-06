@@ -1,9 +1,10 @@
+import { setToken } from "@/services/api/config"
 import { AuthService } from "@/services/api/rest/auth.service"
 
 const state = {
   isLoading: false,
   error: null,
-  isAuth: !!localStorage.getItem('key'),
+  isAuth: !!localStorage.getItem('token'),
 }
 
 const getters = {
@@ -30,7 +31,8 @@ const actions = {
     commit('SET_ERROR', null)
     try {
       const response = await AuthService.login(data)
-      localStorage.setItem('key', response.data.key)
+      localStorage.setItem('token', response.data.key)
+      setToken(response.data.key)
       commit('SET_IS_AUTH', true)
       return response.data
     } catch(e) {
