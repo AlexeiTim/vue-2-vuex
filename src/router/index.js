@@ -2,11 +2,25 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import { routes } from './routes';
+import store from '@/store';
 
 
 Vue.use(Router);
 
-export default new Router({
-  mode: 'history', // Используйте history mode для красивых URL без #
+const router =  new Router({
+  mode: 'history',
   routes
 });
+
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.authPermission)) {
+    if (!store.getters['auth/isAuth'])
+      next({ name: 'login' })
+    else next()
+  }
+  else next()
+})
+
+
+export default router;

@@ -1,15 +1,18 @@
-import HomeView from '../views/HomeView.vue';
-import AboutView from '../views/AboutView.vue';
+import ApplicationsView from '../views/ApplicationsView.vue';
+import LoginView from '../views/LoginView.vue';
 
 export const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'Applications',
+    component: ApplicationsView,
+    meta: {
+      authPermission: true,
+    }
   },
   {
-    path: '/about',
-    name: 'about',
-    component: AboutView
+    path: '/login',
+    name: 'login',
+    component: LoginView
   }
 ]

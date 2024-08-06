@@ -1,9 +1,5 @@
 <template>
-  <div class="root">
-    <p class="root__count">{{ count }}</p>
-    <button @click="increment">Increment</button>
     <RouterView />
-  </div>
 </template>
 
 <script>
