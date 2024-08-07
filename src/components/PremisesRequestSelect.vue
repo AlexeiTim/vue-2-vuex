@@ -1,33 +1,48 @@
 <template>
-  <select :value="modelValue" @change="handleChangeModelValue">
-    <option :value="item.id" v-for="item in items" :key="item.id">
-      {{ item.address }}
-    </option>
-  </select>
+  <div>
+    <select :value="value" @change="handleChangeModelValue">
+      <option :value="modelValue">default {{ modelValue || "none" }}</option>
+      <option :value="item.id" v-for="item in items" :key="item.id">
+        {{ item.address }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
-  name: 'PremisesRequestSelect',
-  props: ['modelValue'],
-  emits: ['update:modelValue', 'change'],
+  name: "PremisesRequestSelect",
+  props: {
+    value: {
+      type: String,
+      default: "",
+    },
+  },
+  emits: ["input", "change"],
   computed: {
-    ...mapState('premises', {
-      items: state => state.items
-    })
+    ...mapState("premises", {
+      items: (state) => state.items,
+    }),
   },
   methods: {
     handleChangeModelValue(event) {
-      this.$emit('update:modelValue', event.target.value)
-      this.$emit('change', event.target.value)
-    }
+      const selectedValue = event.target.value;
+      this.$emit("input", selectedValue);
+      this.$emit("change", selectedValue);
+    },
   },
   mounted() {
-    this.$store.dispatch('premises/getAll')
-  }
-}
+    this.$store.dispatch("premises/getAll");
+  },
+  watch: {
+    value: {
+      handler(newValue) {
+        console.log(newValue, "newModelValue");
+      },
+      immediate: true,
+    },
+  },
+};
 </script>
-
-<style lang="scss" scoped></style>

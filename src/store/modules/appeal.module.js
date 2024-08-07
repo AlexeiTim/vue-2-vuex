@@ -55,6 +55,19 @@ const actions = {
       commit("SET_LOADING", false);
     }
   },
+  async update({ commit }, { id, data }) {
+    commit("SET_LOADING", true);
+    commit("SET_ERROR", null);
+    try {
+      const response = await AppealService.update(id, data);
+      console.log("new appeal", response.data);
+      return response.data;
+    } catch (e) {
+      commit("SET_ERROR", e);
+    } finally {
+      commit("SET_LOADING", false);
+    }
+  },
 };
 
 export default {

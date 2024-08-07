@@ -1,5 +1,5 @@
 <template>
-  <select :value="modelValue" @change="handleChangeApartment">
+  <select :value="value" @change="handleChangeApartment">
     <option v-for="item in items" :key="item.id">
       {{ item.id }}
     </option>
@@ -12,7 +12,7 @@ import { mapState } from "vuex";
 export default {
   name: "ApartmentRequestSelect",
   props: {
-    modelValue: {
+    value: {
       type: String,
       default: "",
     },
@@ -28,7 +28,6 @@ export default {
   },
   data() {
     return {
-      value: this.modelValue,
       params: {
         premises_id: this.premises_id || "",
         search: "",
@@ -36,15 +35,15 @@ export default {
     };
   },
   methods: {
-    handleChangeApartment() {
-      this.$emit("update:modelValue", this.value);
-      this.$emit("change", this.value);
+    handleChangeApartment(event) {
+      const selectedValue = event.target.value;
+      this.$emit("input", selectedValue);
+      this.$emit("change", selectedValue);
     },
   },
   watch: {
     premises_id(newValue) {
       this.params.premises_id = newValue;
-      console.log("change premises_id");
       this.$store.dispatch("apartments/getAll", this.params);
     },
   },

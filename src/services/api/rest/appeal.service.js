@@ -15,4 +15,11 @@ export const AppealService = {
       data,
     });
   },
+  update(id, data) {
+    return makeRequest({
+      url: `/appeals/v1.0/appeals/${id}/`,
+      method: "PATCH",
+      data,
+    });
+  },
 };

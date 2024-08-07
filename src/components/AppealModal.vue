@@ -3,8 +3,9 @@
     <template #body>
       <label>
         Дом
+        {{ formData.premises_id }}
         <PremisesRequestSelect
-          v-model="formData.premises_id"
+          :value="formData.premises_id"
           @change="handleChangePremises"
         />
       </label>
@@ -24,22 +25,22 @@
       </label>
       <label>
         Фамилия
-        <input v-model="formData.last_name" type="text" />
+        <input v-model="formData.applicant.last_name" type="text" />
       </label>
 
       <label>
         Имя
-        <input v-model="formData.first_name" type="text" />
+        <input v-model="formData.applicant.first_name" type="text" />
       </label>
 
       <label>
         Отчество
-        <input v-model="formData.patronymic_name" type="text" />
+        <input v-model="formData.applicant.patronymic_name" type="text" />
       </label>
 
       <label>
         Телефон
-        <input v-model="formData.username" type="text" />
+        <input v-model="formData.applicant.username" type="text" />
       </label>
 
       <label>
@@ -72,20 +73,15 @@ export default {
       type: Boolean,
       required: true,
     },
+    appeal: {
+      type: Object,
+      required: false,
+      default: () => {},
+    },
   },
   data() {
     return {
-      formData: {
-        premises_id: "",
-        last_name: "",
-        first_name: "",
-        patronymic_name: "",
-        username: "",
-        apartment_id: "",
-        due_date: "",
-        description: "",
-        status_id: 1,
-      },
+      formData: this.prepareFormData(),
     };
   },
   computed: {
@@ -95,18 +91,50 @@ export default {
     }),
   },
   methods: {
+    prepareFormData() {
+      return {
+        premises_id: this.appeal?.premise?.id || "",
+        applicant: {
+          last_name: this.appeal?.applicant?.last_name || "",
+          first_name: this.appeal?.applicant?.first_name || "",
+          patronymic_name: this.appeal?.applicant?.patronymic_name || "",
+          username: this.appeal?.applicant?.username || "",
+        },
+        apartment_id: this.appeal?.appartment?.id || "",
+        due_date: this.appeal?.due_date || "",
+        description: this.appeal?.description || "",
+        status_id: this.appeal?.state?.id || 1,
+      };
+    },
     handleChangePremises(value) {
-      this.formData.premises_id = value;
+      console.log(this.formData.premises_id, value);
       console.log(value);
     },
     handleChangeApartment(value) {
       console.log(value);
     },
     async handleSave() {
-      await this.$store.dispatch("appeal/create", this.formData);
+      if (!this.appeal)
+        await this.$store.dispatch("appeal/create", this.formData);
+      else {
+        delete this.formData.status_id;
+        await this.$store.dispatch("appeal/update", {
+          id: this.appeal.id,
+          data: this.formData,
+        });
+      }
+
       if (this.error) return;
       this.$emit("close");
       this.$store.dispatch("appeal/getAll");
+    },
+  },
+  watch: {
+    appeal: {
+      handler() {
+        this.formData = this.prepareFormData();
+      },
+      immediate: true,
     },
   },
 };

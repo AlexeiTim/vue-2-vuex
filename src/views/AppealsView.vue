@@ -1,13 +1,12 @@
 <template>
   <div>
     AppealsView
-
     <input
       v-model="params.search"
       @input="handleInputSearch"
       placeholder="Search"
     />
-    <button @click="isVisible = true">show modal</button>
+    <button @click="handleOpenAppealModal">show modal</button>
     <PremisesRequestSelect
       v-model="params.premise_id"
       @change="handleChangePremise"
@@ -28,7 +27,11 @@
         </thead>
         <tbody>
           <tr v-for="appeal in appeals" :key="appeal.id">
-            <th>{{ appeal.number }}</th>
+            <th>
+              <button @click="handleSelectAppeal(appeal)">
+                {{ appeal.number }}
+              </button>
+            </th>
             <th>{{ appeal.created_at }}</th>
             <th>
               {{ appeal?.premise?.address }} {{ appeal?.apartment?.label }}
@@ -75,7 +78,11 @@
         </button>
       </div>
     </div>
-    <AppealModal :is-visible="isVisible" @close="isVisible = false" />
+    <AppealModal
+      :is-visible="isVisible"
+      :appeal="selectedAppeal"
+      @close="isVisible = false"
+    />
   </div>
 </template>
 
@@ -115,10 +122,17 @@ export default {
       this.params.page = 1;
       this.loadAppeals();
     },
-    handleChangePremise(value) {
+    handleOpenAppealModal() {
+      this.selectedAppeal = null;
+      this.isVisible = true;
+    },
+    handleChangePremise() {
       this.params.page = 1;
-      this.params.premise_id = value;
       this.loadAppeals();
+    },
+    handleSelectAppeal(appeal) {
+      this.isVisible = true;
+      this.selectedAppeal = appeal;
     },
   },
   created() {
@@ -129,6 +143,7 @@ export default {
       isVisible: false,
       test: "",
       pageSizes: [10, 25, 50, 100],
+      selectedAppeal: null,
       params: {
         page: 1,
         page_size: 100,
