@@ -1,11 +1,12 @@
 <template>
   <div>
     AppealsView
-    <input
+    <BaseInput v-model="params.search" @input="handleInputSearch" />
+    <!-- <input
       v-model="params.search"
       @input="handleInputSearch"
       placeholder="Search"
-    />
+    /> -->
     <button @click="handleOpenAppealModal">show modal</button>
     <PremisesRequestSelect
       v-model="params.premise_id"
@@ -32,7 +33,9 @@
                 {{ appeal.number }}
               </button>
             </th>
-            <th>{{ appeal.created_at }}</th>
+            <th>
+              {{ $moment(appeal.created_at).format("DD.MM.YYYY") }}
+            </th>
             <th>
               {{ appeal?.premise?.address }} {{ appeal?.apartment?.label }}
             </th>
@@ -42,7 +45,9 @@
               {{ appeal.applicant?.patronymic_name }}
             </th>
             <th>{{ appeal.description }}</th>
-            <th>{{ appeal.due_date }}</th>
+            <th>
+              {{ $moment(appeal.due_date).format("DD.MM.YYYY HH:mm:ss") }}
+            </th>
             <th>{{ appeal.status?.name }}</th>
           </tr>
         </tbody>
@@ -91,11 +96,13 @@ import AppealModal from "@/components/AppealModal.vue";
 import { mapState } from "vuex";
 import { debounce } from "@/utils/debounce.js";
 import PremisesRequestSelect from "@/components/PremisesRequestSelect.vue";
+import BaseInput from "@/components/BaseInput.vue";
 
 export default {
   components: {
     AppealModal,
     PremisesRequestSelect,
+    BaseInput,
   },
   name: "AppealsView",
   computed: {

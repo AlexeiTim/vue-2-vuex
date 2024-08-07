@@ -3,7 +3,6 @@
     <template #body>
       <label>
         Дом
-        {{ formData.premises_id }}
         <PremisesRequestSelect
           :value="formData.premises_id"
           @change="handleChangePremises"
@@ -40,7 +39,15 @@
 
       <label>
         Телефон
-        <input v-model="formData.applicant.username" type="text" />
+        <BaseInput
+          v-model="formData.applicant.username"
+          v-mask="'+7 ### ### ## ##'"
+        />
+        <!-- <input
+          v-model="formData.applicant.username"
+          v-mask="'+7 ### ### ## ##'"
+          type="text"
+        /> -->
       </label>
 
       <label>
@@ -60,12 +67,14 @@ import { mapState } from "vuex";
 import ApartmentsRequestSelect from "./ApartmentsRequestSelect.vue";
 import BaseModal from "./BaseModal.vue";
 import PremisesRequestSelect from "./PremisesRequestSelect.vue";
+import BaseInput from "./BaseInput.vue";
 
 export default {
   components: {
     BaseModal,
     ApartmentsRequestSelect,
     PremisesRequestSelect,
+    BaseInput,
   },
   name: "AppealModal",
   props: {
@@ -101,7 +110,9 @@ export default {
           username: this.appeal?.applicant?.username || "",
         },
         apartment_id: this.appeal?.appartment?.id || "",
-        due_date: this.appeal?.due_date || "",
+        due_date: this.appeal?.due_date
+          ? this.$moment(this.appeal?.due_date).format("YYYY-MM-DD HH:mm:ss")
+          : "",
         description: this.appeal?.description || "",
         status_id: this.appeal?.state?.id || 1,
       };

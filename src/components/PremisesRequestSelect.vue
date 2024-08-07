@@ -1,7 +1,7 @@
 <template>
   <div>
     <select :value="value" @change="handleChangeModelValue">
-      <option :value="modelValue">default {{ modelValue || "none" }}</option>
+      <option selected value="" disabled>Выберите дом</option>
       <option :value="item.id" v-for="item in items" :key="item.id">
         {{ item.address }}
       </option>
