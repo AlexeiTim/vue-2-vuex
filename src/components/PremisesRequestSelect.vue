@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <select :value="value" @change="handleChangeModelValue">
-      <option selected value="" disabled>Выберите дом</option>
-      <option :value="item.id" v-for="item in items" :key="item.id">
-        {{ item.address }}
-      </option>
-    </select>
-  </div>
+  <BaseSelect :value="value" @change="handleChangeModelValue">
+    <option selected value="" disabled>Выберите дом</option>
+    <option :value="item.id" v-for="item in items" :key="item.id">
+      {{ item.address }}
+    </option>
+  </BaseSelect>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import BaseSelect from "./BaseSelect.vue";
 
 export default {
   name: "PremisesRequestSelect",
+  components: {
+    BaseSelect,
+  },
   props: {
     value: {
       type: String,
@@ -27,22 +29,13 @@ export default {
     }),
   },
   methods: {
-    handleChangeModelValue(event) {
-      const selectedValue = event.target.value;
-      this.$emit("input", selectedValue);
-      this.$emit("change", selectedValue);
+    handleChangeModelValue(value) {
+      this.$emit("input", value);
+      this.$emit("change", value);
     },
   },
   mounted() {
     this.$store.dispatch("premises/getAll");
-  },
-  watch: {
-    value: {
-      handler(newValue) {
-        console.log(newValue, "newModelValue");
-      },
-      immediate: true,
-    },
   },
 };
 </script>

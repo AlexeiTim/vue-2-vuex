@@ -20,21 +20,21 @@
 
       <label>
         Срок
-        <input v-model="formData.due_date" type="datetime-local" />
+        <BaseInput v-model="formData.due_date" />
       </label>
       <label>
         Фамилия
-        <input v-model="formData.applicant.last_name" type="text" />
+        <BaseInput v-model="formData.applicant.last_name" />
       </label>
 
       <label>
         Имя
-        <input v-model="formData.applicant.first_name" type="text" />
+        <BaseInput v-model="formData.applicant.first_name" />
       </label>
 
       <label>
         Отчество
-        <input v-model="formData.applicant.patronymic_name" type="text" />
+        <BaseInput v-model="formData.applicant.patronymic_name" />
       </label>
 
       <label>
@@ -43,20 +43,15 @@
           v-model="formData.applicant.username"
           v-mask="'+7 ### ### ## ##'"
         />
-        <!-- <input
-          v-model="formData.applicant.username"
-          v-mask="'+7 ### ### ## ##'"
-          type="text"
-        /> -->
       </label>
 
       <label>
         Описание заявки
-        <textarea v-model="formData.description" />
+        <BaseTextarea v-model="formData.description" />
       </label>
     </template>
     <template #footer>
-      <button @click="handleSave">Save</button>
+      <BaseButton @click="handleSave">Save</BaseButton>
       <div v-show="isLoading">Loading...</div>
     </template>
   </BaseModal>
@@ -68,6 +63,8 @@ import ApartmentsRequestSelect from "./ApartmentsRequestSelect.vue";
 import BaseModal from "./BaseModal.vue";
 import PremisesRequestSelect from "./PremisesRequestSelect.vue";
 import BaseInput from "./BaseInput.vue";
+import BaseTextarea from "./BaseTextarea.vue";
+import BaseButton from "./BaseButton.vue";
 
 export default {
   components: {
@@ -75,6 +72,8 @@ export default {
     ApartmentsRequestSelect,
     PremisesRequestSelect,
     BaseInput,
+    BaseTextarea,
+    BaseButton,
   },
   name: "AppealModal",
   props: {

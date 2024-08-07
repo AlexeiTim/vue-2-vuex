@@ -1,13 +1,13 @@
 <template>
-    <RouterView />
+  <RouterView />
 </template>
 
 <script>
-import { RouterView } from 'vue-router';
+import { RouterView } from "vue-router";
 
 export default {
   comments: {
-    RouterView
-  }
+    RouterView,
+  },
 };
 </script>

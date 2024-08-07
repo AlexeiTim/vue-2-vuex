@@ -1,93 +1,71 @@
 <template>
-  <div>
-    AppealsView
-    <BaseInput v-model="params.search" @input="handleInputSearch" />
-    <!-- <input
-      v-model="params.search"
-      @input="handleInputSearch"
-      placeholder="Search"
-    /> -->
-    <button @click="handleOpenAppealModal">show modal</button>
-    <PremisesRequestSelect
-      v-model="params.premise_id"
-      @change="handleChangePremise"
-    />
-    <div class="table-wrapper">
-      <div v-if="isLoading">Loading...</div>
-      <table v-else class="table" border>
-        <thead>
-          <tr>
-            <th>Номер</th>
-            <th>Создана</th>
-            <th>Адрес</th>
-            <th>Заявитель</th>
-            <th>Описание</th>
-            <th>Срок</th>
-            <th>Статус</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appeal in appeals" :key="appeal.id">
-            <th>
-              <button @click="handleSelectAppeal(appeal)">
-                {{ appeal.number }}
-              </button>
-            </th>
-            <th>
-              {{ $moment(appeal.created_at).format("DD.MM.YYYY") }}
-            </th>
-            <th>
-              {{ appeal?.premise?.address }} {{ appeal?.apartment?.label }}
-            </th>
-            <th>
-              {{ appeal.applicant?.first_name }}
-              {{ appeal.applicant?.last_name }}
-              {{ appeal.applicant?.patronymic_name }}
-            </th>
-            <th>{{ appeal.description }}</th>
-            <th>
-              {{ $moment(appeal.due_date).format("DD.MM.YYYY HH:mm:ss") }}
-            </th>
-            <th>{{ appeal.status?.name }}</th>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="pagination">
-      <div class="pagination__left">
-        <p>
-          {{ params.page_size * params.page - params.page_size + 1 }}-{{
-            params.page_size * params.page - (params.page_size - appeals.length)
-          }}
-          из {{ totalCount }} записей
-        </p>
-        <select v-model="params.page_size" @change="handleChangePageSize">
-          <option
-            :value="pageSize"
-            v-for="pageSize in pageSizes"
-            :key="pageSize"
-          >
-            {{ pageSize }}
-          </option>
-        </select>
-      </div>
+  <div class="root">
+    <header class="header">Список заявок</header>
+    <main class="main">
+      <div class="card">
+        <div class="card__header">
+          <BaseButton @click="handleOpenAppealModal">show modal</BaseButton>
+        </div>
+        <div class="card__filters">
+          <BaseInput v-model="params.search" @input="handleInputSearch" />
+          <PremisesRequestSelect
+            v-model="params.premise_id"
+            @change="handleChangePremise"
+          />
+        </div>
+        <div class="card__table">
+          <div v-if="isLoading">Загрузка....</div>
+          <AppealsTable
+            v-else
+            :appeals="appeals"
+            @select-appeal="handleSelectAppeal"
+          />
+        </div>
+        <div class="card__pagination">
+          <div class="pagination">
+            <div class="pagination__left">
+              <p>
+                {{ params.page_size * params.page - params.page_size + 1 }}-{{
+                  params.page_size * params.page -
+                  (params.page_size - appeals.length)
+                }}
+                из {{ totalCount }} записей
+              </p>
+              {{ params.page_size }}
+              <BaseSelect
+                v-model="params.page_size"
+                @change="handleChangePageSize"
+              >
+                <option
+                  :value="pageSize"
+                  v-for="pageSize in pageSizes"
+                  :key="pageSize"
+                >
+                  {{ pageSize }}
+                </option>
+              </BaseSelect>
+            </div>
 
-      <div class="pagination__right">
-        <button
-          :class="{ active: page === params.page }"
-          @click="handleChangePage(page)"
-          v-for="page in pagesCount"
-          :key="page"
-        >
-          {{ page }}
-        </button>
+            <div class="pagination__right">
+              <button
+                :class="{ active: page === params.page }"
+                @click="handleChangePage(page)"
+                v-for="page in pagesCount"
+                :key="page"
+              >
+                {{ page }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <AppealModal
+          :is-visible="isVisible"
+          :appeal="selectedAppeal"
+          @close="isVisible = false"
+        />
       </div>
-    </div>
-    <AppealModal
-      :is-visible="isVisible"
-      :appeal="selectedAppeal"
-      @close="isVisible = false"
-    />
+    </main>
   </div>
 </template>
 
@@ -97,12 +75,18 @@ import { mapState } from "vuex";
 import { debounce } from "@/utils/debounce.js";
 import PremisesRequestSelect from "@/components/PremisesRequestSelect.vue";
 import BaseInput from "@/components/BaseInput.vue";
+import BaseButton from "@/components/BaseButton.vue";
+import BaseSelect from "@/components/BaseSelect.vue";
+import AppealsTable from "@/components/AppealsTable.vue";
 
 export default {
   components: {
     AppealModal,
     PremisesRequestSelect,
     BaseInput,
+    BaseButton,
+    BaseSelect,
+    AppealsTable,
   },
   name: "AppealsView",
   computed: {
@@ -125,8 +109,9 @@ export default {
       this.params.page = page;
       this.loadAppeals();
     },
-    handleChangePageSize() {
+    handleChangePageSize(value) {
       this.params.page = 1;
+      this.params.page_size = value;
       this.loadAppeals();
     },
     handleOpenAppealModal() {
@@ -149,45 +134,70 @@ export default {
     return {
       isVisible: false,
       test: "",
-      pageSizes: [10, 25, 50, 100],
+      pageSizes: ["10", "25", "50", "100"],
       selectedAppeal: null,
       params: {
         page: 1,
-        page_size: 100,
+        page_size: "10",
         search: "",
         premise_id: "",
       },
     };
   },
   mounted() {
-    this.$store.dispatch("appeal/getAll");
+    this.$store.dispatch("appeal/getAll", this.params);
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.table-wrapper {
-  overflow-y: scroll;
-  max-height: 200px;
-}
-
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  &__left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.root {
+  .header {
+    padding: 23px 32px;
+    width: 100%;
+    margin-bottom: 20px;
   }
-}
+  .main {
+    padding: 27px 15px;
+  }
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-button {
-  cursor: pointer;
-}
+    &__left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
 
-.active {
-  background: green;
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+    }
+
+    &__filters {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  button {
+    cursor: pointer;
+  }
+
+  .active {
+    background: green;
+  }
 }
 </style>

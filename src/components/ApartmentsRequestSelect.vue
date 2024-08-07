@@ -1,16 +1,20 @@
 <template>
-  <select :value="value" @change="handleChangeApartment">
+  <BaseSelect :value="value" @change="handleChangeApartment">
     <option v-for="item in items" :key="item.id">
       {{ item.id }}
     </option>
-  </select>
+  </BaseSelect>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import BaseSelect from "./BaseSelect.vue";
 
 export default {
   name: "ApartmentRequestSelect",
+  components: {
+    BaseSelect,
+  },
   props: {
     value: {
       type: String,
@@ -35,10 +39,9 @@ export default {
     };
   },
   methods: {
-    handleChangeApartment(event) {
-      const selectedValue = event.target.value;
-      this.$emit("input", selectedValue);
-      this.$emit("change", selectedValue);
+    handleChangeApartment(value) {
+      this.$emit("input", value);
+      this.$emit("change", value);
     },
   },
   watch: {

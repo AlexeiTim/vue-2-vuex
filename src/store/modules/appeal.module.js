@@ -60,7 +60,6 @@ const actions = {
     commit("SET_ERROR", null);
     try {
       const response = await AppealService.update(id, data);
-      console.log("new appeal", response.data);
       return response.data;
     } catch (e) {
       commit("SET_ERROR", e);
