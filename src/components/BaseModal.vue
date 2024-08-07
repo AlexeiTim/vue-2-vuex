@@ -13,9 +13,7 @@
         </slot>
       </div>
       <div class="modal-footer">
-        <slot name="footer">
-          
-        </slot>
+        <slot name="footer"> </slot>
       </div>
     </div>
   </div>
@@ -23,23 +21,23 @@
 
 <script>
 export default {
-  name: 'BaseModal',
+  name: "BaseModal",
   props: {
     isVisible: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     close() {
-      this.$emit('close');
+      this.$emit("close");
     },
     closeOnOverlay(e) {
       if (e.target === e.currentTarget) {
         this.close();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
