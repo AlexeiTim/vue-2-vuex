@@ -4,6 +4,8 @@ const state = {
   isLoading: false,
   error: null,
   appeals: [],
+  totalCount: 0,
+  pagesCount: 0,
 }
 
 const mutations = {
@@ -15,6 +17,12 @@ const mutations = {
   },
   SET_ERROR(state, error) {
     state.error = error
+  },
+  SET_TOTAL_COUNT(state, count) {
+    state.totalCount = count
+  },
+  SET_PAGES_COUNT(state, count) {
+    state.pagesCount = count
   }
 }
 
@@ -25,6 +33,8 @@ const actions = {
     try {
       const response = await AppealService.getAll(params)
       commit('SET_APPEALS', response.data.results)
+      commit('SET_TOTAL_COUNT', response.data.count)
+      commit('SET_PAGES_COUNT', response.data.pages)
       return response.data
     } catch(e) {
       commit('SET_ERROR', e)
