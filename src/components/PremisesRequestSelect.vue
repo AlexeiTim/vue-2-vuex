@@ -4,8 +4,14 @@
     :label="label"
     :value="value"
     @change="handleChangeModelValue"
+    :placeholder="placeholder"
   >
-    <option selected value="" disabled>Выберите дом</option>
+    <option selected value="" hidden>
+      <span class="placeholder"></span>
+    </option>
+    <option value="">
+      <span class="placeholder">Все</span>
+    </option>
     <option :value="item.id" v-for="item in items" :key="item.id">
       {{ item.address }}
     </option>
@@ -34,6 +40,10 @@ export default {
       type: String,
       default: "",
     },
+    placeholder: {
+      type: String,
+      default: "",
+    },
   },
   emits: ["input", "change"],
   computed: {
@@ -52,3 +62,9 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.placeholder {
+  color: $secondary-color;
+}
+</style>

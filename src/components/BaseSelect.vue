@@ -2,7 +2,7 @@
   <div class="root">
     <label :class="{ success }" class="label" v-if="label">{{ label }}</label>
     <div class="select">
-      <select :value="value" @change="handleChange">
+      <select :value="value" @change="handleChange" :placeholder="placeholder">
         <slot />
       </select>
       <ArrowDownIcon />
@@ -18,7 +18,7 @@ export default {
   components: {
     ArrowDownIcon,
   },
-  props: ["value", "label", "success"],
+  props: ["value", "label", "success", "placeholder"],
   emits: ["input", "change"],
   methods: {
     handleChange(event) {

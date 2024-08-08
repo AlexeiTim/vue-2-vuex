@@ -13,12 +13,15 @@
         </div>
         <div class="card__filters">
           <BaseInput
-            placeholder="Поиск (№ заявки, название)"
+            label="Поиск (№ заявки, название)"
             search
             v-model="params.search"
             @input="handleInputSearch"
           />
           <PremisesRequestSelect
+            placeholder="Дом"
+            label="Дом"
+            style="padding: 0"
             v-model="params.premise_id"
             @change="handleChangePremise"
           />
@@ -191,7 +194,7 @@ export default {
 
     &__filters {
       display: flex;
-      align-items: center;
+      align-items: end;
       justify-content: space-between;
       gap: 15px;
       & > * {
