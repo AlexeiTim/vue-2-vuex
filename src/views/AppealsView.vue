@@ -24,7 +24,7 @@
           />
         </div>
         <div class="card__table">
-          <div v-if="isLoading">Загрузка....</div>
+          <BaseLoadingSpinner v-if="isLoading" />
           <AppealsTable
             v-else
             :appeals="appeals"
@@ -92,6 +92,7 @@ import BaseInput from "@/components/BaseInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseSelect from "@/components/BaseSelect.vue";
 import AppealsTable from "@/components/AppealsTable.vue";
+import BaseLoadingSpinner from "@/components/BaseLoadingSpinner.vue";
 
 export default {
   components: {
@@ -101,6 +102,7 @@ export default {
     BaseButton,
     BaseSelect,
     AppealsTable,
+    BaseLoadingSpinner,
   },
   name: "AppealsView",
   computed: {

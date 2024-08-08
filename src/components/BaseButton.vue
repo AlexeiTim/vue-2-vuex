@@ -1,5 +1,11 @@
 <template>
-  <button :class="{ circle }" :type="type" class="root" @click="$emit('click')">
+  <button
+    :class="{ circle }"
+    :size="size"
+    :type="type"
+    class="root"
+    @click="$emit('click')"
+  >
     <slot />
   </button>
 </template>
@@ -13,6 +19,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    size: {
+      type: String,
+      default: "default",
+    },
     type: {
       type: String,
       default: "success",
@@ -24,7 +34,6 @@ export default {
 <style lang="scss" scoped>
 .root {
   transition: background 0.3s ease;
-  padding: 7px 16px;
   border: none;
   color: white;
   border-radius: 2px;
@@ -50,6 +59,15 @@ export default {
         background: $success-color-100;
       }
     }
+  }
+
+  &[size="default"] {
+    padding: 7px 16px;
+  }
+
+  &[size="small"] {
+    padding: 4px 14.5px;
+    border-radius: 4px;
   }
   &.circle {
     border-radius: 50%;
