@@ -159,6 +159,7 @@ export default {
       this.formData.premises_id = value;
     },
     handleChangeApartment(value) {
+      //** С бэка не смог получить ниодной квартиры */
       console.log(value);
     },
     async handleSave() {

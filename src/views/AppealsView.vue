@@ -100,7 +100,6 @@ export default {
       this.loadAppeals();
     },
     handlePageChange({ page, page_size }) {
-      console.log(page, page_size);
       this.params.page = page;
       this.params.page_size = page_size;
       this.loadAppeals();
