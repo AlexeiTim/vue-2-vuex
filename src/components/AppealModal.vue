@@ -30,8 +30,8 @@
           <BaseInput
             type="datetime-local"
             label="Срок"
-            :error="!!errors['due_date']"
-            :error-message="errors['due_date']?.join(' ')"
+            :error="!!fieldErrors['due_date']"
+            :error-message="fieldErrors['due_date']?.join(' ')"
             :success="!!formData.due_date"
             v-model="formData.due_date"
           />
@@ -91,6 +91,7 @@ import BaseInput from "./BaseInput.vue";
 import BaseTextarea from "./BaseTextarea.vue";
 import BaseButton from "./BaseButton.vue";
 import BaseLoadingSpinner from "./BaseLoadingSpinner.vue";
+import { defineErrors } from "@/utils/defineErrors";
 
 export default {
   components: {
@@ -117,7 +118,7 @@ export default {
   data() {
     return {
       formData: this.prepareFormData(),
-      errors: {},
+      fieldErrors: {},
     };
   },
   computed: {
@@ -172,7 +173,8 @@ export default {
       }
 
       if (this.error) {
-        this.errors = this.error.response.data.data;
+        const { fieldErrors } = defineErrors(this.error);
+        this.fieldErrors = fieldErrors;
         return;
       }
       this.$emit("close");

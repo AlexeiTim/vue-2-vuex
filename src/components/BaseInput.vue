@@ -1,8 +1,15 @@
 <template>
   <div class="root">
     <div class="root__input">
-      <label v-if="label" :class="{ success }" class="label">{{ label }}</label>
-      <div class="input-wrapper">
+      <div :class="{ apendLabel: hasAppend }">
+        <div />
+        <label v-if="label" :class="{ success }" class="label">{{
+          label
+        }}</label>
+      </div>
+
+      <div class="input-wrapper" :class="{ append: hasAppend }">
+        <slot name="append"> </slot>
         <input
           :type="type"
           :placeholder="placeholder"
@@ -62,6 +69,11 @@ export default {
       default: false,
     },
   },
+  computed: {
+    hasAppend() {
+      return !!this.$slots.append;
+    },
+  },
   emits: ["input"],
   methods: {
     handleInput(event) {
@@ -89,6 +101,13 @@ export default {
     }
   }
 
+  .apendLabel {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 8.5px;
+  }
+
   .input {
     flex-grow: 1;
     width: 100%;
@@ -105,6 +124,9 @@ export default {
 
   .input-wrapper {
     display: flex;
+    &.append {
+      gap: 8px;
+    }
   }
 
   .error {
@@ -112,6 +134,7 @@ export default {
     bottom: -16px;
     color: red;
     font-size: 12px;
+    z-index: 16;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
