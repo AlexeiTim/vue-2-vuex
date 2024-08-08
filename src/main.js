@@ -5,7 +5,7 @@ import router from "./router";
 import VueMoment from "vue-moment";
 import moment from "moment";
 import VMask from "v-mask";
-import "./assets/style.scss";
+import "./assets/styles/main.scss";
 
 Vue.use(VueMoment, { moment });
 

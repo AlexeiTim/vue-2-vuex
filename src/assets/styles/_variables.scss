@@ -1,0 +1,20 @@
+$success-color: #50b053;
+$primary-color: #3498db;
+$secondary-color: #eeeeee;
+$secondary-text-color: #6c757d;
+$secondary-color-200: #cccccc;
+$secondary-color-300: #ababab;
+$font-size-base: 16px;
+$default-color: white;
+$main-text-color: #333333;
+
+@function shade($color, $percentage) {
+  @if $percentage > 0 {
+    @return lighten($color, $percentage);
+  } @else {
+    @return darken($color, -$percentage);
+  }
+}
+
+$success-color-100: shade($success-color, 10%);
+$default-color-100: shade($default-color, -10%);

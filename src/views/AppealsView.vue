@@ -4,10 +4,17 @@
     <main class="main">
       <div class="card">
         <div class="card__header">
-          <BaseButton @click="handleOpenAppealModal">show modal</BaseButton>
+          <BaseButton @click="handleOpenAppealModal" class="card__header-button"
+            >СОЗДАТЬ</BaseButton
+          >
         </div>
         <div class="card__filters">
-          <BaseInput v-model="params.search" @input="handleInputSearch" />
+          <BaseInput
+            placeholder="Поиск (№ заявки, название)"
+            search
+            v-model="params.search"
+            @input="handleInputSearch"
+          />
           <PremisesRequestSelect
             v-model="params.premise_id"
             @change="handleChangePremise"
@@ -47,14 +54,18 @@
             </div>
 
             <div class="pagination__right">
-              <button
-                :class="{ active: page === params.page }"
-                @click="handleChangePage(page)"
-                v-for="page in pagesCount"
-                :key="page"
-              >
-                {{ page }}
-              </button>
+              <template v-for="(page, index) in pagesCount">
+                <BaseButton
+                  type="default"
+                  circle
+                  :key="page"
+                  v-if="index < 5 || index >= pagesCount - 1"
+                  :class="{ active: page === params.page }"
+                  @click="handleChangePage(page)"
+                >
+                  {{ page }}
+                </BaseButton>
+              </template>
             </div>
           </div>
         </div>
@@ -156,6 +167,8 @@ export default {
     padding: 23px 32px;
     width: 100%;
     margin-bottom: 20px;
+    font-size: 20px;
+    line-height: 24px;
   }
   .main {
     padding: 27px 15px;
@@ -169,6 +182,12 @@ export default {
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    &__right {
+      display: flex;
+      align-items: center;
+      gap: 2px;
     }
   }
 
@@ -184,12 +203,19 @@ export default {
       display: flex;
       align-items: center;
       justify-content: end;
+      &-button {
+        box-shadow: 0 4px 4px rgba(106, 174, 94, 25%);
+      }
     }
 
     &__filters {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
+      & > * {
+        flex-basis: 50%;
+      }
     }
   }
   button {
