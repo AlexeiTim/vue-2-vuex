@@ -217,7 +217,8 @@ export default {
   transition: opacity 0.3s ease;
 }
 
-.modal-fade-enter, .modal-fade-leave-to /* .modal-fade-leave-active в версиях ниже Vue 2.1.8 */ {
+.modal-fade-enter,
+.modal-fade-leave-to {
   opacity: 0;
 }
 </style>
