@@ -77,5 +77,12 @@ export default {
     align-items: center;
     justify-content: center;
   }
+
+  &:disabled {
+    &:hover {
+      background: none;
+    }
+    cursor: not-allowed;
+  }
 }
 </style>

@@ -15,12 +15,7 @@ export default {
   components: {
     ArrowDownIcon,
   },
-  props: {
-    value: {
-      type: String,
-      default: "",
-    },
-  },
+  props: ["value"],
   emits: ["input", "change"],
   methods: {
     handleChange(event) {

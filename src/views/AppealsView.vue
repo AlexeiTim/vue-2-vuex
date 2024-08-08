@@ -32,45 +32,13 @@
           />
         </div>
         <div class="card__pagination">
-          <div class="pagination">
-            <div class="pagination__left">
-              <p>
-                {{ params.page_size * params.page - params.page_size + 1 }}-{{
-                  params.page_size * params.page -
-                  (params.page_size - appeals.length)
-                }}
-                из {{ totalCount }} записей
-              </p>
-              {{ params.page_size }}
-              <BaseSelect
-                v-model="params.page_size"
-                @change="handleChangePageSize"
-              >
-                <option
-                  :value="pageSize"
-                  v-for="pageSize in pageSizes"
-                  :key="pageSize"
-                >
-                  {{ pageSize }}
-                </option>
-              </BaseSelect>
-            </div>
-
-            <div class="pagination__right">
-              <template v-for="(page, index) in pagesCount">
-                <BaseButton
-                  type="default"
-                  circle
-                  :key="page"
-                  v-if="index < 5 || index >= pagesCount - 1"
-                  :class="{ active: page === params.page }"
-                  @click="handleChangePage(page)"
-                >
-                  {{ page }}
-                </BaseButton>
-              </template>
-            </div>
-          </div>
+          <BasePagination
+            :page-size="+params.page_size"
+            :totalCount="+totalCount"
+            :page="+params.page"
+            :pages-count="+pagesCount"
+            @page-changed="handlePageChange"
+          />
         </div>
 
         <AppealModal
@@ -90,9 +58,9 @@ import { debounce } from "@/utils/debounce.js";
 import PremisesRequestSelect from "@/components/PremisesRequestSelect.vue";
 import BaseInput from "@/components/BaseInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import BaseSelect from "@/components/BaseSelect.vue";
 import AppealsTable from "@/components/AppealsTable.vue";
 import BaseLoadingSpinner from "@/components/BaseLoadingSpinner.vue";
+import BasePagination from "@/components/BasePagination.vue";
 
 export default {
   components: {
@@ -100,7 +68,7 @@ export default {
     PremisesRequestSelect,
     BaseInput,
     BaseButton,
-    BaseSelect,
+    BasePagination,
     AppealsTable,
     BaseLoadingSpinner,
   },
@@ -123,6 +91,12 @@ export default {
     },
     handleChangePage(page) {
       this.params.page = page;
+      this.loadAppeals();
+    },
+    handlePageChange({ page, page_size }) {
+      console.log(page, page_size);
+      this.params.page = page;
+      this.params.page_size = page_size;
       this.loadAppeals();
     },
     handleChangePageSize(value) {
@@ -154,7 +128,7 @@ export default {
       selectedAppeal: null,
       params: {
         page: 1,
-        page_size: "10",
+        page_size: 10,
         search: "",
         premise_id: "",
       },
@@ -192,7 +166,7 @@ export default {
     &__right {
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
     }
   }
 
