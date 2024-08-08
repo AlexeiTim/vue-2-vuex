@@ -4,6 +4,7 @@
       <label v-if="label" :class="{ success }" class="label">{{ label }}</label>
       <div class="input-wrapper">
         <input
+          :type="type"
           :placeholder="placeholder"
           class="input"
           :value="value"
@@ -13,6 +14,9 @@
           <SearchIcon v-if="search" />
         </slot>
       </div>
+    </div>
+    <div v-if="error" class="error">
+      {{ errorMessage }}
     </div>
   </div>
 </template>
@@ -28,6 +32,18 @@ export default {
     value: {
       type: String,
       default: "",
+    },
+    error: {
+      type: Boolean,
+      default: false,
+    },
+    errorMessage: {
+      type: String,
+      default: "",
+    },
+    type: {
+      type: String,
+      default: "text",
     },
     label: {
       type: String,
@@ -66,6 +82,8 @@ export default {
 
   .label {
     color: $secondary-color-300;
+    font-size: 12px;
+    line-height: 18px;
     &.success {
       color: $success-color;
     }
@@ -87,6 +105,17 @@ export default {
 
   .input-wrapper {
     display: flex;
+  }
+
+  .error {
+    position: absolute;
+    bottom: -16px;
+    color: red;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 }
 </style>

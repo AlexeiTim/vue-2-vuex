@@ -1,5 +1,5 @@
 <template>
-  <BaseSelect :value="value" @change="handleChangeApartment">
+  <BaseSelect :label="label" :value="value" @change="handleChangeApartment">
     <option v-for="item in items" :key="item.id">
       {{ item.id }}
     </option>
@@ -24,6 +24,10 @@ export default {
       type: String,
       default: "",
     },
+    label: {
+      type: String,
+      default: "",
+    },
   },
   computed: {
     ...mapState("apartments", {
@@ -45,9 +49,11 @@ export default {
     },
   },
   watch: {
-    premises_id(newValue) {
-      this.params.premises_id = newValue;
-      this.$store.dispatch("apartments/getAll", this.params);
+    premises_id: {
+      handler(newValue) {
+        this.params.premises_id = newValue;
+        this.$store.dispatch("apartments/getAll", this.params);
+      },
     },
   },
   mounted() {

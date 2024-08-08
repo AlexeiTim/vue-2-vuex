@@ -1,9 +1,12 @@
 <template>
   <div class="root">
-    <select :value="value" @change="handleChange">
-      <slot />
-    </select>
-    <ArrowDownIcon />
+    <label :class="{ success }" class="label" v-if="label">{{ label }}</label>
+    <div class="select">
+      <select :value="value" @change="handleChange">
+        <slot />
+      </select>
+      <ArrowDownIcon />
+    </div>
   </div>
 </template>
 
@@ -15,7 +18,7 @@ export default {
   components: {
     ArrowDownIcon,
   },
-  props: ["value"],
+  props: ["value", "label", "success"],
   emits: ["input", "change"],
   methods: {
     handleChange(event) {
@@ -34,8 +37,25 @@ export default {
   padding: 8px 12px 8px 0;
   border-bottom: 1px solid $secondary-color-200;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
+  flex-direction: column;
+  .select {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .label {
+    color: $secondary-color-300;
+    font-size: 12px;
+    line-height: 18px;
+    &.success {
+      color: $success-color;
+    }
+  }
+
   select {
     flex-grow: 1;
     width: 100%;

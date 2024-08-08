@@ -5,7 +5,6 @@
         <slot name="header">
           <div />
         </slot>
-        <button class="close-button" @click="close">x</button>
       </div>
       <div class="modal-body">
         <slot name="body">
@@ -58,27 +57,29 @@ export default {
 .modal {
   background: white;
   border-radius: 8px;
-  width: 500px;
+  width: 738px;
+  height: 480px;
   max-width: 100%;
-  padding: 20px;
+  padding: 24px 32px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #eee;
   padding-bottom: 10px;
 }
 
 .modal-body {
   padding: 20px 0;
+  flex-grow: 1;
 }
 
 .modal-footer {
-  border-top: 1px solid #eee;
   padding-top: 10px;
   text-align: right;
 }

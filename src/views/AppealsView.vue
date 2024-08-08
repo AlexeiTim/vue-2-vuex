@@ -33,6 +33,7 @@
         </div>
         <div class="card__pagination">
           <BasePagination
+            v-if="appeals && appeals.length"
             :page-size="+params.page_size"
             :totalCount="+totalCount"
             :page="+params.page"
@@ -42,6 +43,7 @@
         </div>
 
         <AppealModal
+          v-if="isVisible"
           :is-visible="isVisible"
           :appeal="selectedAppeal"
           @close="isVisible = false"

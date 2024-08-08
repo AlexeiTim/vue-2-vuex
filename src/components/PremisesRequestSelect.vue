@@ -1,5 +1,10 @@
 <template>
-  <BaseSelect :value="value" @change="handleChangeModelValue">
+  <BaseSelect
+    :success="success"
+    :label="label"
+    :value="value"
+    @change="handleChangeModelValue"
+  >
     <option selected value="" disabled>Выберите дом</option>
     <option :value="item.id" v-for="item in items" :key="item.id">
       {{ item.address }}
@@ -17,7 +22,15 @@ export default {
     BaseSelect,
   },
   props: {
+    success: {
+      type: Boolean,
+      default: false,
+    },
     value: {
+      type: String,
+      default: "",
+    },
+    label: {
       type: String,
       default: "",
     },

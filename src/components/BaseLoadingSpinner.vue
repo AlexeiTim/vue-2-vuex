@@ -1,5 +1,5 @@
 <template>
-  <div class="spinner">
+  <div :class="{ small }" class="spinner">
     <div class="double-bounce1"></div>
     <div class="double-bounce2"></div>
   </div>
@@ -8,15 +8,26 @@
 <script>
 export default {
   name: "BaseLoadingSpinner",
+  props: {
+    small: {
+      type: Boolean,
+      default: false,
+    },
+  },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .spinner {
   width: 40px;
   height: 40px;
-  position: relative;
   margin: 100px auto;
+  &.small {
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+  }
+  position: relative;
 }
 
 .double-bounce1,
