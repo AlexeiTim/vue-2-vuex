@@ -44,13 +44,14 @@
             @page-changed="handlePageChange"
           />
         </div>
-
-        <AppealModal
-          v-if="isVisible"
-          :is-visible="isVisible"
-          :appeal="selectedAppeal"
-          @close="isVisible = false"
-        />
+        <Transition name="modal-fade">
+          <AppealModal
+            v-if="isVisible"
+            :is-visible="isVisible"
+            :appeal="selectedAppeal"
+            @close="isVisible = false"
+          />
+        </Transition>
       </div>
     </main>
   </div>
@@ -209,5 +210,14 @@ export default {
   .active {
     background: green;
   }
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-fade-enter, .modal-fade-leave-to /* .modal-fade-leave-active в версиях ниже Vue 2.1.8 */ {
+  opacity: 0;
 }
 </style>
