@@ -4,9 +4,12 @@
     <main class="main">
       <div class="card">
         <div class="card__header">
-          <BaseButton @click="handleOpenAppealModal" class="card__header-button"
-            >СОЗДАТЬ</BaseButton
+          <BaseButton
+            @click="handleOpenAppealModal"
+            class="card__header-button"
           >
+            СОЗДАТЬ
+          </BaseButton>
         </div>
         <div class="card__filters">
           <BaseInput

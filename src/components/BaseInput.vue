@@ -59,7 +59,7 @@ export default {
 <style lang="scss" scoped>
 .root {
   position: relative;
-  padding: 8px 0;
+  padding: 11px 0;
   border-bottom: 1px solid $secondary-color-200;
   display: flex;
   justify-content: space-between;
